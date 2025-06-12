@@ -13,6 +13,11 @@ private object WhatevaiScreens {
     const val CHAT_SCREEN = "chat"
 }
 
+object WhatevaiDestinations {
+    const val HOME_ROUTE = WhatevaiScreens.HOME_SCREEN
+    const val CHAT_ROUTE = WhatevaiScreens.CHAT_SCREEN
+}
+
 class WhatevaiNavigationActions(private val navController: NavHostController) {
 
     fun navigateToChat() {

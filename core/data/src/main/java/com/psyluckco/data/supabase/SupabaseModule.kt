@@ -36,7 +36,7 @@ object SupabaseModule {
     }
 
     @Provides
-    @ViewModelScoped
+    @Singleton
     fun provideDeviceRepository(postgrest: Postgrest): DeviceRepository {
         return SupabaseDeviceRepository(postgrest)
     }

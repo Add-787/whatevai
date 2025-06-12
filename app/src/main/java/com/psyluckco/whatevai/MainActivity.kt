@@ -22,8 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             WhatevaiTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
+                    MainNavGraph(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

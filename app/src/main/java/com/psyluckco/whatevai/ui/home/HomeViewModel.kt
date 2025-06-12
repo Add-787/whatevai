@@ -75,5 +75,5 @@ sealed interface HomeAction {
 data class HomeScreenUiState(
     val isLoading: Boolean = true,
     val errorMessage: String? = null,
-    val devices: PersistentList<Device> = persistentListOf<Device>()
+    val devices: PersistentList<Device> = persistentListOf()
 )

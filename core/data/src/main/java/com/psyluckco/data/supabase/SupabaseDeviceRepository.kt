@@ -20,7 +20,7 @@ class SupabaseDeviceRepository @Inject constructor(
 
     override fun getDevices(): Flow<List<Device>> = flow {
         try {
-            val devices = postgrest["devices"].select().decodeList<Device>()
+            val devices = postgrest["Devices"].select().decodeList<Device>()
             emit(devices)
         } catch (e: Exception) {
             e.printStackTrace()

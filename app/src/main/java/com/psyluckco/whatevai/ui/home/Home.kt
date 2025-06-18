@@ -19,6 +19,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -36,8 +37,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -64,16 +67,21 @@ import kotlin.math.min
 fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     val homeScreenUiState by viewModel.state.collectAsStateWithLifecycle()
     val uiState = homeScreenUiState
-    Box {
-        
-        if(uiState.errorMessage != null) {
-            HomeScreenError(onRetry = {})
-        } else {
-            HomeScreenReady(
-                devices = uiState.devices
-            )
+
+    Scaffold {
+        Box(
+            modifier = Modifier.padding(it)
+        ) {
+            if(uiState.errorMessage != null) {
+                HomeScreenError(onRetry = {})
+            } else {
+                HomeScreenReady(
+                    devices = uiState.devices
+                )
+            }
         }
     }
+
 }
 
 @Composable
@@ -82,9 +90,11 @@ fun HomeScreenReady(
     devices: PersistentList<Device> = persistentListOf(),
     onDeviceClicked: (Device) -> Unit = {}
 ) {
+
     Surface(modifier = modifier.fillMaxSize()) {
         LazyVerticalGrid(
-            columns = GridCells.Fixed(1)
+            columns = GridCells.Fixed(1),
+            contentPadding = PaddingValues(20.dp)
         ) {
             items(devices) {
                 DeviceCard(
@@ -101,7 +111,7 @@ fun HomeScreenReady(
 
 @Composable
 fun DeviceCard(
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier.padding(10.dp),
     deviceName: String,
     ownerName: String,
     percentage: Float,
@@ -112,7 +122,7 @@ fun DeviceCard(
         modifier = modifier
             .height(90.dp)
             .fillMaxWidth(),
-        shape = RectangleShape
+        shape = CardDefaults.elevatedShape
     ) {
         Row {
             Box(
@@ -137,18 +147,16 @@ fun DeviceCard(
                     .padding(horizontal = 12.dp),
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                Text(text = deviceName, style = MaterialTheme.typography.headlineMedium)
-                Text(text = ownerName, style = MaterialTheme.typography.headlineSmall)
+                Text(text = deviceName, style = MaterialTheme.typography.headlineSmall)
+                Text(text = ownerName, style = MaterialTheme.typography.labelLarge)
             }
-
-            Spacer(modifier = Modifier.width(60.dp))
 
             val primary = MaterialTheme.colorScheme.primary
             
             Box(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .width(110.dp),
+                    .width(100.dp),
                 contentAlignment = Alignment.Center
             ) {
                 val clampedPercentage = percentage.coerceIn(0f, 100f)
@@ -163,12 +171,12 @@ fun DeviceCard(
                     label = "sweepAngle"
                 )
 
-                Canvas(modifier = modifier.fillMaxHeight()) {
+                Canvas(modifier = modifier.fillMaxSize()) {
                     val diameter = min(size.width, size.height)
                     val arcSize = Size(diameter - 10.0f, diameter - 10.0f)
                     val topLeft = Offset(
-                        x = -70.0f,
-                        y = 50.0f
+                        x = 30.0f,
+                        y = size.height/8
                     )
 
                     // drawCircle(color = primary, radius = 10.0f)

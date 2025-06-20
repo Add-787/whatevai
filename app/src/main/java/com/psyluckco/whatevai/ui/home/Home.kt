@@ -16,6 +16,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -64,7 +65,10 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlin.math.min
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
+fun HomeScreen(
+    viewModel: HomeViewModel = hiltViewModel(),
+    onDeviceClicked: (String) -> Unit,
+) {
     val homeScreenUiState by viewModel.state.collectAsStateWithLifecycle()
     val uiState = homeScreenUiState
 
@@ -76,7 +80,8 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
                 HomeScreenError(onRetry = {})
             } else {
                 HomeScreenReady(
-                    devices = uiState.devices
+                    devices = uiState.devices,
+                    onDeviceClicked = onDeviceClicked
                 )
             }
         }
@@ -88,7 +93,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 fun HomeScreenReady(
     modifier: Modifier = Modifier,
     devices: PersistentList<Device> = persistentListOf(),
-    onDeviceClicked: (Device) -> Unit = {}
+    onDeviceClicked: (String) -> Unit = { }
 ) {
 
     Surface(modifier = modifier.fillMaxSize()) {
@@ -99,8 +104,9 @@ fun HomeScreenReady(
             items(devices) {
                 DeviceCard(
                     deviceName = it.name,
-                    ownerName = it.ownerId?.toString()?: "Unknown",
-                    percentage = it.oxygenPerc
+                    ownerName = it.ownerId?.toString() ?: "Unknown",
+                    percentage = it.oxygenPerc,
+                    onDeviceClicked = onDeviceClicked
                 )
 
             }
@@ -116,11 +122,15 @@ fun DeviceCard(
     ownerName: String,
     percentage: Float,
     startAngle: Float = -90f,
+    onDeviceClicked: (String) -> Unit
 //    backgroundArcColor: Color? = Color(Color.LTGRAY)
 ) {
     Card(
         modifier = modifier
             .height(90.dp)
+            .clickable {
+                onDeviceClicked("")
+            }
             .fillMaxWidth(),
         shape = CardDefaults.elevatedShape
     ) {
@@ -222,7 +232,8 @@ private fun DeviceCardPreview() {
         DeviceCard(
             deviceName = "Athena",
             ownerName = "Tismo",
-            percentage = 60f
+            percentage = 60f,
+            onDeviceClicked = { }
         )
     }
 }

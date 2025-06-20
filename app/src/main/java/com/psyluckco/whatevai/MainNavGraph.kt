@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.psyluckco.whatevai.ui.detail.DetailScreen
 import com.psyluckco.whatevai.ui.home.HomeScreen
 
 @Composable
@@ -37,14 +38,24 @@ fun MainNavGraph(
         composable(
             WhatevaiDestinations.HOME_ROUTE
         ) {
-            HomeScreen()
+            HomeScreen(
+                onDeviceClicked =  { navActions.navigateToDetail() }
+            )
         }
 
+//        composable(
+//            WhatevaiDestinations.CHAT_ROUTE
+//        ) {
+//            ChatScreen()
+//        }
+
         composable(
-            WhatevaiDestinations.CHAT_ROUTE
+            WhatevaiDestinations.DETAIL_ROUTE
         ) {
-            // ChatScreen()
+            DetailScreen()
         }
+
+
 
     }
 

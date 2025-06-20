@@ -7,6 +7,7 @@
 package com.psyluckco.whatevai.ui.detail
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -26,6 +27,7 @@ import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottom
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStart
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLineCartesianLayer
 import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
+import com.patrykandpatrick.vico.core.cartesian.axis.Axis
 import com.patrykandpatrick.vico.core.cartesian.axis.HorizontalAxis
 import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
@@ -43,6 +45,7 @@ fun DetailScreen(viewModel: DetailViewModel = hiltViewModel()) {
         Box(modifier = Modifier
             .fillMaxSize()
             .padding(it)) {
+            DeviceScreenReady()
 
         }
 
@@ -54,8 +57,10 @@ fun DeviceScreenReady(
     modifier: Modifier = Modifier,
     dataPoints: PersistentList<Float> = persistentListOf(),
 ) {
-    Column() {
-
+    Column(
+        modifier = modifier.padding(vertical = 10.dp, horizontal = 20.dp)
+    ) {
+        GraphSection()
     }
 
 }
@@ -74,12 +79,20 @@ fun GraphSection(
     }
 
     Card {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(modifier = Modifier.height(200.dp), contentAlignment = Alignment.Center) {
             CartesianChartHost(
                 chart = rememberCartesianChart(
-                    rememberLineCartesianLayer(),
-                    startAxis = VerticalAxis.rememberStart(),
-                    bottomAxis = HorizontalAxis.rememberBottom(),
+                    rememberLineCartesianLayer(
+
+                    ),
+                    startAxis = VerticalAxis.rememberStart(
+                        guideline = null,
+                        tick = null
+                    ),
+                    bottomAxis = HorizontalAxis.rememberBottom(
+                        guideline = null,
+                        tick = null
+                    ),
                 ),
                 modelProducer = modelProducer,
                 modifier = modifier
